@@ -1,4 +1,4 @@
-# Projeto Integrador Senac
+# Projeto Integrador Senac - Desenvolvimento Low Code em Ciência de Dados
 
 ## Integrantes
 - Natalia Hetkowski Hermann
