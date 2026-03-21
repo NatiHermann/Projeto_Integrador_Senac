@@ -29,9 +29,7 @@ O repositorio foi organizado para separar configuracao, processamento, armazenam
 
 ## 2. Definicao da base de dados e contextualizacao
 ### Base escolhida
-Foi utilizada a base de metadados do dataset Onco360, disponibilizado no Kaggle. O arquivo lido nesta etapa e:
-
-- /Users/THALITA/Downloads/archive/raw_onco360_metadados.csv
+Foi utilizada a base de metadados do dataset Onco360, disponibilizado no Kaggle. Para executar o projeto, baixe o dataset do Kaggle (https://www.kaggle.com/datasets/onco360) e coloque o arquivo raw_onco360_metadados.csv em data/raw/.
 
 O caminho da origem pode ser alterado no arquivo de configuracao config/project.yaml ou diretamente pela barra lateral do dashboard.
 
