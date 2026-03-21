@@ -1,0 +1,7 @@
+project_name: Projeto Integrador Senac
+source_csv: /Users/THALITA/Downloads/archive/raw_onco360_metadados.csv
+database_path: database/onco360_metadata.db
+processed_csv_path: data/processed/onco360_metadata_tratado.csv
+tables:
+  curated: onco360_metadata_curated
+  summary: onco360_metadata_summary
