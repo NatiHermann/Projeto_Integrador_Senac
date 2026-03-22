@@ -13,6 +13,9 @@ O recorte escolhido para esta entrega foi o arquivo de metadados do dataset Onco
 ## 1. Criação e organização do repositório
 O repositório foi organizado para separar configuração, processamento, armazenamento e visualização dos dados. A estrutura atual facilita o desenvolvimento colaborativo e a evolução do projeto nas próximas entregas.
 
+## 1. Criação e organização do repositório
+O repositório foi organizado para separar as camadas de configuração, processamento, armazenamento e visualização. A estrutura atual facilita o desenvolvimento colaborativo e a evolução do projeto nas etapas subsequentes.
+
 ### Estrutura inicial
 - app.py: aplicação Streamlit com o dashboard interativo
 - pipeline.py: pipeline principal de ETL
@@ -23,9 +26,9 @@ O repositório foi organizado para separar configuração, processamento, armaze
 - database/: banco SQLite gerado pela carga
 
 ### Organização adotada
-- separação entre código, configuração, dados processados e banco local
+- Separação entre código, configuração, dados processados e banco local
 - README visível na raiz com contexto, escopo e instruções de execução
-- estrutura simples o suficiente para a primeira entrega e expansível para as fases seguintes
+- Estrutura simples o suficiente para a primeira entrega e expansível para as fases seguintes
 
 ## 2. Definição da base de dados e contextualização
 ### Base escolhida
@@ -34,7 +37,7 @@ Foi utilizada a base de metadados do dataset Onco360, disponibilizado no Kaggle.
 O caminho da origem pode ser alterado no arquivo de configuracao config/project.yaml ou diretamente pela barra lateral do dashboard.
 
 ### Contexto da base
-O Onco360 reúne arquivos relacionados ao domínio de oncologia. Nesta primeira entrega, o grupo não utilizou ainda as tabelas de eventos clínicos ou diagnósticos, mas sim o arquivo de metadados do conjunto, que descreve os arquivos disponíveis, datas de extração, quantidade de registros e volume armazenado.
+O Onco360 reúne arquivos relacionados ao domínio de oncologia. Nesta primeira entrega, o grupo ainda não utilizou as tabelas de eventos clínicos ou diagnósticos, mas sim o arquivo de metadados do conjunto, que descreve os arquivos disponíveis, datas de extração, quantidade de registros e volume armazenado.
 
 ### Origem da base
 - fonte externa: Kaggle
@@ -55,29 +58,29 @@ Esse recorte foi adequado para a primeira entrega porque valida a arquitetura do
 O processo foi estruturado em três etapas clássicas: extração, transformação e carga.
 
 ### Extração
-- leitura do arquivo CSV configurado em config/project.yaml
-- validação da existência do arquivo antes do processamento
-- carregamento da base em DataFrame com pandas
+- Leitura do arquivo CSV configurado em config/project.yaml
+- Validação da existência do arquivo antes do processamento
+- Carregamento da base em DataFrame com pandas
 
 ### Transformação
 As transformações implementadas em pandas foram planejadas para padronizar os dados e gerar indicadores iniciais para o dashboard:
 
-- renomeação das colunas principais para um padrão de análise
-- conversão da coluna de data para formato datetime
-- conversão das colunas numericas de registros e tamanho
-- identificação do nome base do arquivo sem extensão
-- derivação da camada do dado: raw, silver ou gold
-- derivação do domínio do arquivo
-- identificação do formato do arquivo
-- classificação do porte do arquivo com base no tamanho em MiB
-- cálculo do indicador registros_por_mib
-- criação das colunas de ano e mês de extração
-- ordenação dos registros pelo maior volume de registros
+- Renomeação das colunas principais para um padrão de análise
+- Conversão da coluna de data para formato datetime
+- Conversão das colunas numericas de registros e tamanho
+- Identificação do nome base do arquivo sem extensão
+- Derivação da camada do dado: raw, silver ou gold
+- Derivação do domínio do arquivo
+- Identificação do formato do arquivo
+- Classificação do porte do arquivo com base no tamanho em MiB
+- Cálculo do indicador registros_por_mib
+- Criação das colunas de ano e mês de extração
+- Ordenação dos registros pelo maior volume de registros
 
 ### Carga
-- exportação da base tratada para CSV em data/processed/onco360_metadata_tratado.csv
-- gravação da base tratada no banco SQLite em database/onco360_metadata.db
-- gravação de uma tabela resumo agregada por formato e porte do arquivo
+- Exportação da base tratada para CSV em data/processed/onco360_metadata_tratado.csv
+- Gravação da base tratada no banco SQLite em database/onco360_metadata.db
+- Gravação de uma tabela resumo agregada por formato e porte do arquivo
 
 ### Fluxo do processo
 1. Ler o arquivo bruto de metadados.
@@ -94,28 +97,28 @@ Na execução atual do projeto, a base tratada gerada possui 84 registros de dad
 O dashboard foi planejado para permitir leitura rápida do comportamento da base escolhida. As métricas e visualizações foram definidas em coerência com o arquivo de metadados utilizado.
 
 ### Métricas principais
-- quantidade de arquivos no painel
-- total de registros
-- tamanho total armazenado em MiB
-- data da última extração dísponivel
+- Quantidade de arquivos no painel
+- Total de registros
+- Tamanho total armazenado em MiB
+- Data da última extração dísponivel
 
 ### Indicadores derivados
-- porte do arquivo
-- formato do arquivo
-- registros por MiB
-- distribuição por camada e domínio
+- Porte do arquivo
+- Formato do arquivo
+- Registros por MiB
+- Distribuição por camada e domínio
 
 ### Visualizações previstas e implementadas
-- gráfico de barras horizontal com os 10 arquivos de maior volume de registros
-- gráfico de dispersão relacionando tamanho do arquivo e número de registros
-- tabela resumo agregada por formato e porte
-- tabela detalhada da base tratada com filtros
+- Gráfico de barras horizontal com os 10 arquivos de maior volume de registros
+- Gráfico de dispersão relacionando tamanho do arquivo e número de registros
+- Tabela resumo agregada por formato e porte
+- Tabela detalhada da base tratada com filtros
 
 ### Filtros disponíveis
-- filtro por formato do arquivo
-- filtro por porte do arquivo
-- campo para alterar o caminho do arquivo CSV de origem
-- botao para reexecutar o ETL diretamente pela interface
+- Filtro por formato do arquivo
+- Filtro por porte do arquivo
+- Campo para alterar o caminho do arquivo CSV de origem
+- Botao para reexecutar o ETL diretamente pela interface
 
 ### Objetivo do dashboard nesta etapa
 O painel não foi pensado ainda como produto final, mas como uma prova de conceito funcional. O foco foi demonstrar que a base tratada pode ser explorada visualmente, com navegacao, métricas e gráficos coerentes com os dados processados.
