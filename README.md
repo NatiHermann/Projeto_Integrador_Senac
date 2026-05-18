@@ -5,7 +5,108 @@
 - Thalita Neves
 - Vitória Rodrigues
 
-## Visão geral da primeira entrega
+---
+
+## Segunda Entrega - Execução do Projeto
+
+### Visão geral
+A segunda entrega consolida a execução completa do projeto planejado na primeira etapa. O grupo implementou o pipeline de ETL, aplicou transformações sobre a base de metadados do dataset Onco360, construiu um dashboard interativo com Streamlit e publicou a solução na nuvem.
+
+### Dados utilizados
+- **Dataset:** Onco360 (Kaggle)
+- **Arquivo:** `raw_onco360_metadados.csv` (84 registros)
+- **Conteúdo:** metadados dos arquivos do dataset - data de extração, nome do arquivo, quantidade de registros e tamanho em MiB
+
+### Transformações realizadas
+O pipeline (`pipeline.py`) aplica as seguintes transformações sobre os dados brutos:
+
+| # | Transformação | Descrição |
+|---|---|---|
+| 1 | Renomeação de colunas | Padronização para `data_extracao`, `arquivo`, `numero_registros`, `tamanho_mib` |
+| 2 | Conversão de tipos | Data para datetime, colunas numéricas com `pd.to_numeric` |
+| 3 | Extração do nome base | Remoção da extensão do nome do arquivo |
+| 4 | Classificação por camada | Identificação de `raw`, `silver` ou `gold` no nome do arquivo |
+| 5 | Extração do domínio | Nome do domínio sem prefixo de camada |
+| 6 | Identificação do formato | Extensão do arquivo (`.parquet`, `.csv`, etc.) |
+| 7 | Classificação por porte | `muito_pequeno`, `pequeno`, `medio`, `grande` conforme tamanho em MiB |
+| 8 | Cálculo de densidade | Indicador `registros_por_mib` (registros / tamanho) |
+| 9 | Derivação temporal | Colunas `ano_extracao` e `mes_extracao` |
+| 10 | Ordenação | Registros ordenados pelo maior volume |
+| 11 | Agregação resumo | Tabela resumo agrupada por formato e porte |
+
+### Visualizações e métricas no Dashboard
+
+#### Métricas (KPIs)
+- Quantidade de arquivos no painel
+- Total de registros (~96,8 milhões)
+- Tamanho total armazenado (~5.575 MiB)
+- Data da última extração disponível
+
+#### Gráficos
+- **Barras horizontais:** Top 10 arquivos por volume de registros, colorido por porte
+- **Dispersão (scatter):** Relação tamanho × quantidade de registros, por formato
+
+#### Tabelas interativas
+- Resumo agregado por formato e porte
+- Base tratada completa com filtros
+
+#### Filtros disponíveis
+- Formato do arquivo (multiselect)
+- Porte do arquivo (multiselect)
+- Campo para alterar caminho do CSV fonte
+- Botão para reexecutar o ETL pela interface
+
+### Publicação na nuvem
+A aplicação está publicada no **Streamlit Community Cloud** e pode ser acessada pelo link:
+
+> **https://projetointegradorsenac.streamlit.app**
+
+O deploy é feito diretamente a partir deste repositório GitHub. A cada push na branch `main`, o Streamlit Cloud atualiza a aplicação automaticamente.
+
+### Estrutura do projeto
+```
+app.py                  → Dashboard Streamlit
+pipeline.py             → Pipeline ETL (extract, transform, load)
+requirements.txt        → Dependências Python
+config/project.yaml     → Configurações de caminhos e tabelas
+data/raw/               → Arquivo CSV bruto (entrada)
+data/processed/         → CSV tratado (saída do ETL)
+database/               → Banco SQLite gerado pelo ETL
+.streamlit/config.toml  → Tema visual do Streamlit
+```
+
+### Como executar localmente
+1. Criar e ativar a virtualenv:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+2. Iniciar o dashboard (o ETL roda automaticamente na primeira execução):
+```bash
+streamlit run app.py
+```
+
+Ou executar apenas o pipeline:
+```bash
+python pipeline.py
+```
+
+### Dependências
+- pandas
+- PyYAML
+- streamlit
+- plotly
+- pyarrow
+
+---
+
+## Primeira Entrega - Planejamento e Estruturação
+
+<details>
+<summary>Clique para expandir o conteúdo da primeira entrega</summary>
+
 Esta primeira etapa tem como objetivo comprovar a organização inicial do projeto e a viabilidade técnica de uma pipeline de ETL com visualização de dados. O grupo estruturou o repositório, definiu a base de dados inicial, implementou o fluxo de extração, transformação e carga, e desenvolveu um dashboard interativo para exploração dos resultados.
 
 O recorte escolhido para esta entrega foi o arquivo de metadados do dataset Onco360. A decisão por começar pelos metadados foi proposital: esse arquivo permite validar todo o fluxo técnico do projeto antes da ampliação para tabelas analíticas mais complexas da área de oncologia.
@@ -170,3 +271,5 @@ streamlit run app.py
 Esta primeira entrega comprova que o projeto possui base técnica organizada para continuar evoluindo. O repositório esta estruturado, a base escolhida foi contextualizada, o processo de ETL foi planejado e implementado, e o dashboard já oferece uma camada inicial de análise.
 
 Nas proximas etapas, o grupo pretende ampliar o escopo para arquivos analiticos mais ricos do dataset Onco360, incluindo novas regras de limpeza, novos indicadores e visualizacoes mais proximas do problema de negocio.
+
+</details>

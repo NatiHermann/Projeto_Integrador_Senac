@@ -174,12 +174,12 @@ def show_dashboard(database_path: str, tables: dict) -> None:
         st.plotly_chart(fig_scatter, use_container_width=True)
 
     st.subheader("Resumo agregado")
-    st.dataframe(summary, use_container_width=True, hide_index=True)
+    st.dataframe(summary, width="stretch", hide_index=True)
 
     st.subheader("Base tratada")
     st.dataframe(
         filtered.sort_values(by="numero_registros", ascending=False),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -196,16 +196,19 @@ def main() -> None:
     database_path = config["database_path"]
     database_exists = Path(database_path).exists()
 
+    if not database_exists:
+        with st.spinner("Primeira execucao detectada. Gerando banco de dados..."):
+            result = run_pipeline(CONFIG_PATH, source_path=source_path)
+        st.sidebar.success(f"ETL concluido: {result['rows_loaded']} linhas carregadas.")
+        database_path = result["database_path"]
+        database_exists = True
+
     if st.sidebar.button("Executar ETL"):
         with st.spinner("Processando arquivo e atualizando o banco SQLite..."):
             result = run_pipeline(CONFIG_PATH, source_path=source_path)
         st.sidebar.success(f"ETL concluido: {result['rows_loaded']} linhas carregadas.")
         database_path = result["database_path"]
         database_exists = True
-
-    if not database_exists:
-        st.info("O banco ainda nao foi gerado. Clique em 'Executar ETL' na barra lateral para carregar o arquivo base.")
-        return
 
     show_dashboard(database_path, config["tables"])
 

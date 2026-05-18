@@ -16,7 +16,10 @@ def load_config(config_path: Path | None = None) -> dict:
     with path.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file)
 
-    config["source_csv"] = str(Path(config["source_csv"]).expanduser())
+    source = Path(config["source_csv"]).expanduser()
+    if not source.is_absolute():
+        source = PROJECT_ROOT / source
+    config["source_csv"] = str(source.resolve())
     config["database_path"] = str((PROJECT_ROOT / config["database_path"]).resolve())
     config["processed_csv_path"] = str((PROJECT_ROOT / config["processed_csv_path"]).resolve())
     return config
